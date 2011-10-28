@@ -1,0 +1,8 @@
+call go
+call go
+reset
+
+label go
+store_data Go
+print 2
+ret

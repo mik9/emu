@@ -1,0 +1,109 @@
+# 0 - array of filenames
+# 1 - iterator
+# 2 - 
+# 3 - length of array
+# 4 - element of the array
+# 5 - command
+# 6 - current directory, filename
+# 7 - array of parent filenames
+
+label start
+create_array 7
+store_data /
+copy 6 2
+append_element 6 7
+
+label main_loop
+load_file_list 0 6
+call print_array
+label main_loop2
+store_data filemanager>
+print 2
+free_data
+copy 8 6
+input 6
+store_data cd
+== 2 6 cd
+free_data
+store_data back
+== 2 6 up
+free_data
+store_data del
+== 2 6 del
+free_data
+store_data rm
+== 2 6 del
+free_data
+store_data cat
+== 2 6 cat
+free_data
+store_data quit
+== 2 6 quit
+free_data
+store_data Bad command
+print_line 2
+free_data
+copy 6 8
+jmp main_loop2
+
+label quit
+store_data /boot
+execute 2
+
+label cat
+free_data
+store_data filemanager (cat what)>
+print 2
+free_data
+input 6
+load_file_data 6 2
+print_line 2
+free_data
+jmp main_loop
+
+label cd
+free_data
+store_data filemanager (cd to)>
+print 2
+free_data
+input 6
+append_element 6 7
+jmp main_loop
+
+label up
+free_data
+len 7 3
+dec 3
+del_element 3 7
+dec 3
+get_element 3 7
+copy 6 4
+jmp main_loop
+
+label del
+free_data
+push
+store_data filemanager (del what)>
+print 2
+free_data
+input 6
+delete_file 6
+free_data
+pop
+jmp start
+
+label print_array
+label next
+write 1 -1
+len 0 3
+dec 3
+== 1 3 ret
+label print_array_loop
+inc 1
+get_element 1 0
+print_line 4
+< 1 3 print_array_loop
+label ret
+ret
+
+reset

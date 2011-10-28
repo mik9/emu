@@ -1,0 +1,140 @@
+# 0 - keys test
+# 1 -
+# 2 - strings
+# 3 - line's dx
+# 4 - line's dy (should be always 0)
+# 5 - collisions test
+# 6 - ball's dx
+# 7 - ball's dy
+# 8 - key code on IRQ
+# 9 - 
+
+switch_display 1
+
+catch_irq key_press keyPress
+catch_irq key_release keyRelease
+
+# Creating wall's
+create_rect top-wall 0 0 640 5
+create_rect right-wall 635 0 640 480
+create_rect left-wall 0 0 5 480
+create_rect line 280 460 80 15
+create_rect false-line 0 500 640 501
+create_ellipse ball 310 230 20 20
+
+# First vector of ball
+write 6 1
+write 7 -1
+
+# First vector of line
+write 3 0
+write 4 0
+
+label loop
+msleep 10
+move_item ball 6 7
+write 5 0
+check_for_object_collisions ball
+
+store_data top-wall
+== 2 5 from_top
+free_data
+
+store_data line
+== 2 5 from_line
+free_data
+
+store_data left-wall
+== 2 5 from_left
+free_data
+
+store_data right-wall
+== 2 5 from_right
+free_data
+
+store_data false-line
+== 2 5 from_false_line
+free_data
+jmp check_line
+
+label from_top
+free_data
+write 7 1
+jmp check_line
+
+label from_line
+free_data
+write 7 -1
+jmp check_line
+
+label from_left
+free_data
+write 6 1
+jmp check_line
+
+label from_right
+free_data
+write 6 -1
+jmp check_line
+
+label from_false_line
+free_data
+store_data Looser!!!
+print 2
+free_data
+jmp quit
+
+label check_line
+write 5 0
+check_for_object_collisions line
+store_data left-wall
+== 2 5 stop_line
+free_data
+store_data right-wall
+== 2 5 stop_line
+free_data
+move_item line 3 4
+jmp loop
+
+label stop_line
+free_data
+sign 3
+move_item line 3 4
+write 3 0
+jmp loop
+
+# Key press event processor
+label keyPress
+push
+write 0 16777234 # Qt's KeyRight code
+== 0 8 right
+write 0 16777236 # Qt's KeyLeft code
+== 0 8 left
+write 0 81       # Qt's Key_Q code
+== 0 8 quit
+pop
+ret
+
+label left
+pop
+write 3 3
+ret
+
+label right
+pop
+write 3 -3
+ret
+
+label quit
+switch_display 0
+store_data /boot
+execute 2
+
+label keyRelease
+write 0 16777234 # Qt's KeyRight code
+== 0 8 release
+write 0 16777236 # Qt's KeyLeft code
+== 0 8 release
+label release
+write 3 0
+ret

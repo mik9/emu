@@ -1,0 +1,35 @@
+# 0 -
+# 1 - text
+# 2 - strings/input
+# 3 - filename
+
+catch_irq key_press keyPress
+
+store_data Hello World Editor!!!
+print_line 2
+free_data
+
+store_data editor (open what)>
+print 2
+free_data
+input 2
+copy 3 2
+load_file_data 2 1
+connect_with_buffer 1
+switch_console_mode 0
+print 1
+
+label loop
+msleep 500
+jmp loop
+
+label keyPress
+write 0 16777216 # Qt's Key_Escape code
+== 0 8 quit
+ret
+
+label quit
+save_file_data 1 3
+switch_console_mode 1
+store_data /boot
+execute 2

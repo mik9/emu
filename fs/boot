@@ -1,0 +1,31 @@
+# 7 - array with available commands
+create_array 7
+store_data run
+append_element 2 7
+store_data quit
+append_element 2 7
+label start
+store_data >
+print 2
+free_data
+input 0
+write 1 0
+get_element 1 7
+== 0 4 run
+write 1 1
+get_element 1 7
+== 0 4 quit
+store_data I don't know your command, try again!
+print_line 2
+free_data
+jmp start
+label run
+store_data What do you want to run now?
+print 2
+free_data
+input 8
+execute 8
+print_line 2
+print 8
+label quit
+reset
