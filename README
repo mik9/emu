@@ -1,6 +1,3 @@
 Primitive emulator of computer.
 
-At ths stage has text display implementation, some CPU instructions, strange variant of RAM.
-Work on filesystem support is almost finished.
-
-TODO: CPU instruction to work with files, graphics...
+At ths stage has text display implementation, some CPU instructions, strange variant of RAM, filesystem, graphics.
